@@ -12,9 +12,16 @@ namespace FanfictionMultisearch.Search.Requests
 
         public string Query { get; set; }
 
+        public List<string> Characters { get; set; }
+        public List<string> Fandoms { get; set; }
+        public List<string> OtherTags { get; set; }
+
         public RequestBase()
         {
-
+            Result = new HtmlDocument();
+            Characters = new List<string>();
+            Fandoms = new List<string>();
+            OtherTags = new List<string>();
         }
 
         public virtual string GetRequestString()
@@ -25,6 +32,20 @@ namespace FanfictionMultisearch.Search.Requests
         public virtual List<FanFic> DecodeHTML()
         {
             return null;
+        }
+
+        public void FixBasicErrors()
+        {
+            var errors = Result.ParseErrors.ToList();
+            foreach(var error in errors)
+            {
+                switch(error.Code)
+                {
+                    case HtmlParseErrorCode.TagNotOpened:
+                        Result.LoadHtml("<html>\n" + Result.Text);
+                        break;
+                }
+            }
         }
     }
 }

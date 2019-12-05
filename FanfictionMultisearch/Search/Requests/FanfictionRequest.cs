@@ -17,32 +17,14 @@ namespace FanfictionMultisearch.Search.Requests
         public string type { get; set; }
         
 
-        public FanfictionRequest()
+        public FanfictionRequest() : base()
         {
             type = "story"; // defaults to a story serach
         }
 
-        private string GetQuery()
-        {
-            string s = "";
-            var words = Query.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-            foreach (string word in words)
-            {
-                if (word != words.Last())
-                {
-                    s += word + "+";
-                }
-                else
-                {
-                    s += word;
-                }
-            }
-            return s;
-        }
-
         public override string GetRequestString()
         {
-            return request_body + keywords_body + GetQuery() + type_body + type;
+            return request_body + keywords_body + Query + type_body + type;
             //return "http://fanfiction.net";
         }
 

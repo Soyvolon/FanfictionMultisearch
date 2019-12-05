@@ -27,9 +27,9 @@ namespace FanfictionMultisearch.Pages
             
         }
 
-        public async Task OnPostAsync()
+        public void OnPost()
         {
-            await SearchManager.NewSearch(BasicSearch).ConfigureAwait(true);
+            SearchManager.NewSearch(BasicSearch);
         }
     }
 }

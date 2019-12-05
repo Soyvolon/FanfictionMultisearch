@@ -17,7 +17,7 @@ namespace FanfictionMultisearch.Search.Requests
         private readonly string request_body = "https://archiveofourown.org/works/search?utf8=%E2%9C%93&work_search%5Bquery%5D=";        
         private readonly string page_request_body = "page=";
 
-        public AO3Request()
+        public AO3Request() : base()
         {
 
         }

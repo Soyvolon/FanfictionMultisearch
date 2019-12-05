@@ -29,7 +29,7 @@ namespace FanfictionMultisearch.Search
             ItemsPerPage = itemsPerPage;
         }
 
-        public async Task NewSearch(string basicSearch)
+        public void NewSearch(string basicSearch)
         {
             ActiveSearch = new Search // Build search from passed form results
             {
@@ -37,10 +37,10 @@ namespace FanfictionMultisearch.Search
             };
 
             ActiveSearch.BuildRequests(); // Configure the seprate requests
-            await MakeWebRequest().ConfigureAwait(true); // Make a new web request
+            MakeWebRequest(); // Make a new web request
         }
 
-        private async Task MakeWebRequest()
+        private void MakeWebRequest()
         {
 
             HtmlWeb web = new HtmlWeb();
@@ -48,32 +48,33 @@ namespace FanfictionMultisearch.Search
             foreach (RequestBase request in ActiveSearch.Requests)
             {
                 string rstring = request.GetRequestString();
-                if (request.GetType() == typeof(FanfictionRequest))
+                if (rstring != null && rstring != "")
                 {
-                    string html = string.Empty;
-
-                    HttpWebRequest req = (HttpWebRequest)WebRequest.Create(rstring);
-                    req.AutomaticDecompression = DecompressionMethods.GZip;
-
-                    using (HttpWebResponse response = (HttpWebResponse)req.GetResponse())
-                    using (Stream stream = response.GetResponseStream())
-                    using (StreamReader reader = new StreamReader(stream))
-                    {
-                        html = reader.ReadToEnd();
-                    }
-
-                    request.Result = new HtmlDocument();
+                    var html = GetHtml(rstring);
+                    
                     request.Result.LoadHtml(html);
+                    request.FixBasicErrors();
 
-                    FanFics.AddRange(request.DecodeHTML());
-                }
-                else if (rstring != null && rstring != "")
-                {
-                    HtmlDocument htmlDoc = await web.LoadFromWebAsync(rstring).ConfigureAwait(true);
-                    request.Result = htmlDoc;
                     FanFics.AddRange(request.DecodeHTML());
                 }
             }
+        }
+
+        public static string GetHtml(string url)
+        {
+            string html = string.Empty;
+
+            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+            req.AutomaticDecompression = DecompressionMethods.GZip;
+
+            using (HttpWebResponse response = (HttpWebResponse)req.GetResponse())
+            using (Stream stream = response.GetResponseStream())
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                html = reader.ReadToEnd();
+            }
+
+            return html;
         }
     }
 }
