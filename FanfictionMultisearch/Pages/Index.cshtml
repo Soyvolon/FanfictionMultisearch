@@ -1,0 +1,67 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <div class="align-top">
+        <form method="post">
+            <input class="w-75" asp-for="BasicSearch" value="@Model.BasicSearch" />
+            <input id="TriggerSearch" type="submit" value="Search" />
+        </form>
+    </div>
+    <div class="align-bottom">
+        <table class="table table-bordered table-responsive-lg">
+            <tr>
+                <th>Search Results</th>
+            </tr>
+            @foreach (var i in Model.SearchManager.GetCurrentResults())
+            {
+                <tr>
+                    <td>
+                        <h3><a href="@i.Name.Item2">@i.Name.Item1</a> by <a href="@i.Author.Item2">@i.Author.Item1</a></h3>
+                        <p>
+                            <strong>Fandoms:</strong>
+
+                            @foreach (var fandom in i.Fandoms)
+                            {
+                                if (fandom.Item2 != "")
+                                {
+                                    <a href="@fandom.Item2">@fandom.Item1 </a>
+                                }
+                                else
+                                {
+                                    <a>@fandom.Item1 </a>
+                                }
+                            }
+                        </p>
+                        <p>
+                            <strong>Tags:</strong>
+
+                            @foreach (var tag in i.Tags)
+                            {
+                                if (tag.Item2 != "")
+                                {
+                                    <a href="@tag.Item2">@tag.Item1 </a>
+                                }
+                                else
+                                {
+                                    <a>@tag.Item1 </a>
+                                }
+                            }
+                        </p>
+                        <hr />
+                        <p>
+                            @i.Description
+                        </p>
+                        <hr />
+                        <p>
+                            Likes: @i.Likes | Word Count: | Other Stuff: 
+                        </p>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
