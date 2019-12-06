@@ -11,7 +11,7 @@ pool:
 
 variables:
   solution: '**/*.sln'
-  buildPlatform: 'x64'
+  buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
 steps:
@@ -43,7 +43,7 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: true
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStaginDirectory)'
+    arguments: '--configuration Release --runtime linux-x64 --output $(Build.ArtifactStaginDirectory)'
     zipAfterPublish: false
 
 - task: PublishBuildArtifacts@1
