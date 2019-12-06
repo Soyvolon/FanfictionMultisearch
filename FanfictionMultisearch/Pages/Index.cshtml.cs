@@ -16,6 +16,8 @@ namespace FanfictionMultisearch.Pages
 
         [BindProperty]
         public string BasicSearch { get; set; }
+        [BindProperty]
+        public string CharacterStr { get; set; }
 
         public IndexModel(ILogger<IndexModel> logger)
         {

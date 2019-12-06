@@ -22,6 +22,10 @@ namespace FanfictionMultisearch.Search.Requests
             type = "story"; // defaults to a story serach
         }
 
+        public FanfictionRequest(Search search) : base(search)
+        {
+
+        }
         public override string GetRequestString()
         {
             return request_body + keywords_body + Query + type_body + type;

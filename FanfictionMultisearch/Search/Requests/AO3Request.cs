@@ -22,6 +22,11 @@ namespace FanfictionMultisearch.Search.Requests
 
         }
 
+        public AO3Request(Search search) : base(search)
+        {
+
+        }
+
         public override string GetRequestString()
         {
             return $"{request_body}{Query}";

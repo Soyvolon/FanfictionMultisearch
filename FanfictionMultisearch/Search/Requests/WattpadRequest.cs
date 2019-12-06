@@ -17,6 +17,10 @@ namespace FanfictionMultisearch.Search.Requests
 
         }
 
+        public WattpadRequest(Search search) : base(search)
+        {
+
+        }
         private string CompileTagString()
         {
             string tags = string.Empty;

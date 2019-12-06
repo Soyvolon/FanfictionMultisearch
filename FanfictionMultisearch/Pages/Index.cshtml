@@ -8,6 +8,9 @@
     <div class="align-top">
         <form method="post">
             <input class="w-75" asp-for="BasicSearch" value="@Model.BasicSearch" />
+            <br />
+            <input asp-for="CharacterStr" value="@Model.CharacterStr" title="Character Tags:" />
+            <hr />
             <input id="TriggerSearch" type="submit" value="Search" />
         </form>
     </div>

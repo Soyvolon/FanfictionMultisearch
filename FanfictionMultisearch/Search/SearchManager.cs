@@ -9,6 +9,44 @@ using HtmlAgilityPack;
 
 namespace FanfictionMultisearch.Search
 {
+    public enum SearchDirection
+    {
+        Ascending,
+        Descending
+    }
+
+    public enum SearchBy
+    {
+        Likes,
+        Views,
+        UpdatedDate,
+        PublishedDate,
+        Comments
+    }
+
+    public enum Raiting
+    {
+        General,
+        Teen,
+        Mature,
+        Explicit,
+        None // implys no raiting filter
+    }
+
+    public enum FicStatus
+    {
+        None = -1, // implys no preference
+        InProgress,
+        Complete
+    }
+
+    public enum CrossoverStatus
+    {
+        None = -1,
+        NoCrossover,
+        Crossover
+    }
+
     public class SearchManager
     {
         public int ItemsPerPage { get; set; }
@@ -29,11 +67,33 @@ namespace FanfictionMultisearch.Search
             ItemsPerPage = itemsPerPage;
         }
 
-        public void NewSearch(string basicSearch)
+        public void NewSerach(string basic = "", string title = "", string authors = "", string characters = "", string relationships = "",
+            string fandoms = "", string otherTags = "",
+            Tuple<int, int> likes = null, Tuple<int, int> views = null, Tuple<int, int> comments = null, Tuple<int, int> wordCount = null,
+            string updateBefore = "0", string publishBefore = "0", // where 0 is no limit
+            SearchDirection direction = SearchDirection.Descending, SearchBy searchBy = SearchBy.Likes, Raiting raiting = Raiting.None,
+            FicStatus ficStatus = FicStatus.None, CrossoverStatus crossover = CrossoverStatus.None)
         {
             ActiveSearch = new Search // Build search from passed form results
             {
-                BasicSearch = basicSearch
+                Basic = basic,
+                Title = title,
+                Authors = authors,
+                Characters = characters,
+                Relationships = relationships,
+                Fandoms = fandoms,
+                OtherTags = otherTags,
+                Likes = likes,
+                Views = views,
+                Comments = comments,
+                WordCount = wordCount,
+                UpdateBefore = updateBefore, // TODO 
+                PublishBefore = publishBefore, // Rework this and the one above to be DateTimes
+                Direction = direction,
+                SearchFicsBy = searchBy,
+                FicRaiting = raiting,
+                Status = ficStatus,
+                Crossover = crossover
             };
 
             ActiveSearch.BuildRequests(); // Configure the seprate requests
