@@ -67,7 +67,7 @@ namespace FanfictionMultisearch.Search
             ItemsPerPage = itemsPerPage;
         }
 
-        public void NewSerach(string basic = "", string title = "", string authors = "", string characters = "", string relationships = "",
+        public void NewSearch(string basic = "", string title = "", string authors = "", string characters = "", string relationships = "",
             string fandoms = "", string otherTags = "",
             Tuple<int, int> likes = null, Tuple<int, int> views = null, Tuple<int, int> comments = null, Tuple<int, int> wordCount = null,
             string updateBefore = "0", string publishBefore = "0", // where 0 is no limit
