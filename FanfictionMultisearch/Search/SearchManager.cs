@@ -102,9 +102,6 @@ namespace FanfictionMultisearch.Search
 
         private void MakeWebRequest()
         {
-
-            HtmlWeb web = new HtmlWeb();
-
             foreach (RequestBase request in ActiveSearch.Requests)
             {
                 string rstring = request.GetRequestString();

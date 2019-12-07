@@ -118,7 +118,7 @@ namespace FanfictionMultisearch.Search.Requests
                         //Add fic to final list
                         fics.Add(fic);
                     }
-                    catch (Exception ex)
+                    catch
                     {
                         continue;
                     }
