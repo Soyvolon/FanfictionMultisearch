@@ -5,17 +5,23 @@ namespace FanfictionMultisearch.Search
 {
     public class FanFic
     {
-        public Tuple<string, string> Name { get; set; }
+        public Tuple<string, string> Title { get; set; }
         public Tuple<string, string> Author { get; set; }
         public List<Tuple<string, string>> Fandoms { get; set; }
         public List<Tuple<string, string>> Tags { get; set; }
         public long Likes { get; set; }
+        public long Views { get; set; }
         public string Description { get; set; }
+        public bool PaidStory { get; set; }
+        public bool Completed { get; set; }
+
         public FanFic()
         {
             Tags = new List<Tuple<string, string>>();
             Fandoms = new List<Tuple<string, string>>();
             Likes = 0;
+            PaidStory = false;
+            Completed = false;
         }
 
         /// <summary>

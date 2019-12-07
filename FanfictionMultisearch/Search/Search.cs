@@ -34,11 +34,11 @@ namespace FanfictionMultisearch.Search
             Requests = new List<RequestBase>();
         }
 
-            /// <summary>
-            /// Removes old requests of the same request type, adds new reuqest to the list
-            /// </summary>
-            /// <param name="request">New Request</param>
-            public void UpdateRequestString(RequestBase request)
+        /// <summary>
+        /// Removes old requests of the same request type, adds new reuqest to the list
+        /// </summary>
+        /// <param name="request">New Request</param>
+        public void UpdateRequestString(RequestBase request)
         {
             int i = Requests.FindIndex(x => x.GetType() == request.GetType());
             if (i != -1) Requests.RemoveAt(i); // if there is an item, remove it.

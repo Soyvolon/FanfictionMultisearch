@@ -18,6 +18,8 @@ namespace FanfictionMultisearch.Pages
         public string BasicSearch { get; set; }
         [BindProperty]
         public string CharacterStr { get; set; }
+        [BindProperty]
+        public string RelationshipStr { get; set; }
 
         public IndexModel(ILogger<IndexModel> logger)
         {
