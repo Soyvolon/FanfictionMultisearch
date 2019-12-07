@@ -14,21 +14,21 @@ namespace FanfictionMultisearch.Search.Requests
         private readonly string type_body = "&type=";
         private readonly string keywords_body = "&keywords=";
 
-        public string type { get; set; }
+        public string Type { get; set; }
         
 
         public FanfictionRequest() : base()
         {
-            type = "story"; // defaults to a story serach
+            Type = "story"; // defaults to a story serach
         }
 
         public FanfictionRequest(Search search) : base(search)
         {
-            type = "story";
+            Type = "story";
         }
         public override string GetRequestString()
         {
-            return request_body + keywords_body + Query + type_body + type;
+            return request_body + keywords_body + Query + type_body + Type;
             //return "http://fanfiction.net";
         }
 
