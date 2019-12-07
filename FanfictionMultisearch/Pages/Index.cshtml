@@ -6,9 +6,25 @@
 
 <div class="text-center">
     <div class="align-top">
-        <form method="post">
-            <input class="w-75" asp-for="BasicSearch" value="@Model.BasicSearch" />
-            <input id="TriggerSearch" type="submit" value="Search" />
+        <form method="post" class="form-group">
+            <div class="form-row position-sticky">
+                <label class="w-100">
+                    <span class="float-md-left">Basic Search: </span>
+                    <input class="w-75 float-md-right" asp-for="BasicSearch" value="@Model.BasicSearch" />
+                </label>
+            </div>
+            <div class="form-row">
+                <label class="w-50">
+                    <span class="float-md-left">Characters: </span>
+                    <textarea class="w-75 float-md-none" asp-for="CharacterStr" value="@Model.CharacterStr"></textarea>
+                </label>
+                <label class="w-50">
+                    <span class="float-md-left">Relationships: </span>
+                    <textarea class="w-75 float-md-none" asp-for="RelationshipStr" value="@Model.RelationshipStr"></textarea>
+                </label>
+            </div>
+            <hr />
+            <input class="w-100 position-sticky" id="TriggerSearch" type="submit" value="Search" />
         </form>
     </div>
     <div class="align-bottom">
@@ -20,7 +36,7 @@
             {
                 <tr>
                     <td>
-                        <h3><a href="@i.Name.Item2">@i.Name.Item1</a> by <a href="@i.Author.Item2">@i.Author.Item1</a></h3>
+                        <h3><a target="_blank" href="@i.Title.Item2">@i.Title.Item1</a> by <a target="_blank" href="@i.Author.Item2">@i.Author.Item1</a></h3>
                         <p>
                             <strong>Fandoms:</strong>
 
@@ -28,11 +44,11 @@
                             {
                                 if (fandom.Item2 != "")
                                 {
-                                    <a href="@fandom.Item2">@fandom.Item1, </a>
+                                    <a target="_blank" href="@fandom.Item2">@fandom.Item1, </a>
                                 }
                                 else
                                 {
-                                    <a>@fandom.Item1 </a>
+                                    <a>@fandom.Item1, </a>
                                 }
                             }
                         </p>
@@ -43,11 +59,11 @@
                             {
                                 if (tag.Item2 != "")
                                 {
-                                    <a href="@tag.Item2">@tag.Item1, </a>
+                                    <a target="_blank" href="@tag.Item2">@tag.Item1, </a>
                                 }
                                 else
                                 {
-                                    <a>@tag.Item1 </a>
+                                    <a>@tag.Item1, </a>
                                 }
                             }
                         </p>

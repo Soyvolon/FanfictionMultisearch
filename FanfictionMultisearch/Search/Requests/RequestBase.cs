@@ -24,6 +24,11 @@ namespace FanfictionMultisearch.Search.Requests
             OtherTags = new List<string>();
         }
 
+        public RequestBase(Search search) : this() // load attribute lists
+        {
+            Query = search.Basic;
+        }
+
         public virtual string GetRequestString()
         {
             return null;
