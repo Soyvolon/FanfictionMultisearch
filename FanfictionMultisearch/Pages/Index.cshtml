@@ -6,22 +6,135 @@
 
 <div class="text-center">
     <div class="align-top">
+        <button data-toggle="collapse" data-target="#advanced-serach">Advanced Search Options</button>
         <form method="post" class="form-group">
-            <div class="form-row position-sticky">
-                <label class="w-100">
-                    <span class="float-md-left">Basic Search: </span>
-                    <input class="w-75 float-md-right" asp-for="BasicSearch" value="@Model.BasicSearch" />
-                </label>
-            </div>
-            <div class="form-row">
-                <label class="w-50">
-                    <span class="float-md-left">Characters: </span>
-                    <textarea class="w-75 float-md-none" asp-for="CharacterStr" value="@Model.CharacterStr"></textarea>
-                </label>
-                <label class="w-50">
-                    <span class="float-md-left">Relationships: </span>
-                    <textarea class="w-75 float-md-none" asp-for="RelationshipStr" value="@Model.RelationshipStr"></textarea>
-                </label>
+            <table class="search-item">
+                <tr>
+                    <th>Basic Search</th>
+                </tr>
+                <tr>
+                    <td><input class="w-100 float-md-right" asp-for="BasicSearch" value="@Model.BasicSearch" /></td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    
+                </tr>
+            </table>
+            <hr />
+            <div id="advanced-serach" class="collapse">
+                <table class="search-item">
+                    <tr>
+                        <th class="border-right mid-margin-left">
+                            Title:
+                        </th>
+                        <th class="mid-margin-right">
+                            Authors:
+                        </th>
+                    </tr>
+                    <tr>
+                        <td class="border-right mid-margin-left">
+                            <textarea class="w-100 float-md-right" asp-for="TitleStr" value="@Model.TitleStr"></textarea>
+                        </td>
+                        <td class="mid-margin-right">
+                            <textarea class="w-100 float-md-right" asp-for="AuthorStr" value="@Model.AuthorStr"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="border-right mid-margin-left">
+                            Characters:
+                        </th>
+                        <th class="mid-margin-right">
+                            Relationships:
+                        </th>
+                    </tr>
+                    <tr>
+                        <td class="border-right mid-margin-left">
+                            <textarea class="w-100 float-md-right " asp-for="CharacterStr" value="@Model.CharacterStr"></textarea>
+                        </td>
+                        <td class="mid-margin-right">
+                            <textarea class="w-100 float-md-right" asp-for="RelationshipStr" value="@Model.RelationshipStr"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="border-right mid-margin-left">
+                            Fandoms:
+                        </th>
+                        <th class="mid-margin-right">
+                            Other Tags:
+                        </th>
+                    </tr>
+                    <tr>
+                        <td class="border-right mid-margin-left">
+                            <textarea class="w-100 float-md-right " asp-for="FandomsStr" value="@Model.FandomsStr"></textarea>
+                        </td>
+                        <td class="mid-margin-right">
+                            <textarea class="w-100 float-md-right " asp-for="OtherTagsStr" value="@Model.OtherTagsStr"></textarea>
+                        </td>
+                    </tr>
+                </table>
+                <table class="search-item">
+                    <tr class="text-center">
+                        <th class="border-right mid-margin-left">
+                            Likes:
+                        </th>
+                        <th class="border-right mid-margin-right mid-margin-left">
+                            Views:
+                        </th>
+                        <th class="border-right mid-margin-right mid-margin-left">
+                            Comments:
+                        </th>
+                        <th class="mid-margin-right">
+                            Word Count:
+                        </th>
+                    </tr>
+                    <tr>
+                        <td class="border-right mid-margin-left">
+                            <div class="w-100">Min: <input type="number" class="float-md-right" asp-for="LikesMin" value="@Model.LikesMin" /></div>
+                        </td>
+                        <td class="border-right mid-margin-right mid-margin-left">
+                            <div class="w-100">Min: <input type="number" class="float-md-right" asp-for="ViewsMin" value="@Model.ViewsMin" /></div>
+                        </td>
+                        <td class="border-right mid-margin-right mid-margin-left">
+                            <div class="w-100">Min: <input type="number" class="float-md-right" asp-for="CommentsMin" value="@Model.CommentsMin" /></div>
+                        </td>
+                        <td class="mid-margin-right">
+                            <div class="w-100">Min: <input type="number" class="float-md-right" asp-for="WordCountMin" value="@Model.WordCountMin" /></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="border-right mid-margin-left">
+                            <div class="w-100">Max: <input type="number" class="float-md-right" asp-for="LikesMax" value="@Model.LikesMax" /></div>
+                        </td>
+                        <td class="border-right mid-margin-right mid-margin-left">
+                            <div class="w-100">Max: <input type="number" class="float-md-right" asp-for="ViewsMax" value="@Model.ViewsMax" /></div>
+                        </td>
+                        <td class="border-right mid-margin-right mid-margin-left">
+                            <div class="w-100">Max: <input type="number" class="float-md-right" asp-for="CommentsMax" value="@Model.CommentsMax" /></div>
+                        </td>
+                        <td class="mid-margin-right">
+                            <div class="w-100">Max: <input type="number" class="float-md-right" asp-for="WordCountMax" value="@Model.WordCountMax" /></div>
+                        </td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <th class="border-right mid-margin-left">
+                            Updated Before:
+                        </th>
+                        <th class="mid-margin-right">
+                            Published Before:
+                        </th>
+                    </tr>
+                    <tr>
+                        <td class="border-right mid-margin-left">
+
+                        </td>
+                        <td class="mid-margin-right">
+
+                        </td>
+                    </tr>
+                </table>
             </div>
             <hr />
             <input class="w-100 position-sticky" id="TriggerSearch" type="submit" value="Search" />

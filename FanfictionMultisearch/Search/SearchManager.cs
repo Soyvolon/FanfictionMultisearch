@@ -70,10 +70,16 @@ namespace FanfictionMultisearch.Search
         public void NewSearch(string basic = "", string title = "", string authors = "", string characters = "", string relationships = "",
             string fandoms = "", string otherTags = "",
             Tuple<int, int> likes = null, Tuple<int, int> views = null, Tuple<int, int> comments = null, Tuple<int, int> wordCount = null,
-            string updateBefore = "0", string publishBefore = "0", // where 0 is no limit
+            string updateBeforeString = "0", string publishBeforeString = "0", // where 0 is no limit
             SearchDirection direction = SearchDirection.Descending, SearchBy searchBy = SearchBy.Likes, Raiting raiting = Raiting.None,
             FicStatus ficStatus = FicStatus.None, CrossoverStatus crossover = CrossoverStatus.None)
         {
+            if (!DateTime.TryParse(updateBeforeString, out DateTime updateBefore))
+                updateBefore = DateTime.MinValue;
+
+            if (!DateTime.TryParse(publishBeforeString, out DateTime publishBefore))
+                publishBefore = DateTime.MinValue;
+
             ActiveSearch = new Search // Build search from passed form results
             {
                 Basic = basic,
@@ -116,7 +122,6 @@ namespace FanfictionMultisearch.Search
                 }
             }
         }
-
         public static string GetHtml(string url)
         {
             string html = string.Empty;

@@ -93,7 +93,28 @@ body {
 }
 
 /* Form CSS
---------------------------------------------------- */
+---------------------------------------------------*/
 .form-item {
 
+}
+
+/* Search Form CSS
+---------------------------------------------------*/
+.search-item {
+    width: 100%;
+    text-align: left;
+}
+
+.divider-right {
+    border-right: 1px solid black;
+}
+
+.mid-margin-right
+{
+    margin-left: .5em;
+}
+
+.mid-margin-left
+{
+    margin-right: .5em;
 }

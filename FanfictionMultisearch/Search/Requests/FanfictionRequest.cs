@@ -16,7 +16,6 @@ namespace FanfictionMultisearch.Search.Requests
 
         public string Type { get; set; }
         
-
         public FanfictionRequest() : base()
         {
             Type = "story"; // defaults to a story serach
@@ -73,11 +72,18 @@ namespace FanfictionMultisearch.Search.Requests
                             fic.Tags.Add(new Tuple<string, string>(fic_data.Last(), ""));
                         }
 
-                        // Get favorites information
-                        var fav_str = fic_data.Find(x => x.Contains("Favs"));
-                        var fav_num = fav_str.Split(" ", StringSplitOptions.RemoveEmptyEntries).Last();
-                        fav_num = fav_num.Replace(",", "");
-                        fic.Likes = Convert.ToInt64(fav_num);
+                        try
+                        {
+                            // Get favorites information
+                            var fav_str = fic_data.Find(x => x.Contains("Favs"));
+                            var fav_num = fav_str.Split(" ", StringSplitOptions.RemoveEmptyEntries).Last();
+                            fav_num = fav_num.Replace(",", "");
+                            fic.Likes = Convert.ToInt64(fav_num);
+                        }
+                        catch
+                        {
+                            fic.Likes = 0;
+                        }
 
                         // Get description info
                         var desc_data = node.SelectSingleNode(".//div[contains(@class, 'z-padtop')]");

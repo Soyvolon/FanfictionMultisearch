@@ -20,8 +20,8 @@ namespace FanfictionMultisearch.Search
         public Tuple<int, int> Views {get; set;}
         public Tuple<int, int> Comments {get; set;}
         public Tuple<int, int> WordCount {get; set;}
-        public string UpdateBefore {get; set;}
-        public string PublishBefore {get; set;}
+        public DateTime UpdateBefore {get; set;}
+        public DateTime PublishBefore {get; set;}
         public SearchDirection Direction {get; set;}
         public SearchBy SearchFicsBy {get; set;}
         public Raiting FicRaiting {get; set;}
