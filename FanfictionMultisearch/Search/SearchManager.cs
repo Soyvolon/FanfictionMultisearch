@@ -11,8 +11,8 @@ namespace FanfictionMultisearch.Search
 {
     public enum SearchDirection
     {
-        Ascending,
-        Descending
+        Descending,
+        Ascending
     }
 
     public enum SearchBy
@@ -26,23 +26,24 @@ namespace FanfictionMultisearch.Search
 
     public enum Raiting
     {
+        Any,
         General,
         Teen,
         Mature,
         Explicit,
-        None // implys no raiting filter
+        NotExplicit
     }
 
     public enum FicStatus
     {
-        None = -1, // implys no preference
+        Any, // implys no preference
         InProgress,
         Complete
     }
 
     public enum CrossoverStatus
     {
-        None = -1,
+        Any,
         NoCrossover,
         Crossover
     }
@@ -70,16 +71,10 @@ namespace FanfictionMultisearch.Search
         public void NewSearch(string basic = "", string title = "", string authors = "", string characters = "", string relationships = "",
             string fandoms = "", string otherTags = "",
             Tuple<int, int> likes = null, Tuple<int, int> views = null, Tuple<int, int> comments = null, Tuple<int, int> wordCount = null,
-            string updateBeforeString = "0", string publishBeforeString = "0", // where 0 is no limit
-            SearchDirection direction = SearchDirection.Descending, SearchBy searchBy = SearchBy.Likes, Raiting raiting = Raiting.None,
-            FicStatus ficStatus = FicStatus.None, CrossoverStatus crossover = CrossoverStatus.None)
+            DateTime updateBefore = default, DateTime publishBefore = default,
+            SearchDirection direction = SearchDirection.Descending, SearchBy searchBy = SearchBy.Likes, Raiting raiting = Raiting.Any,
+            FicStatus ficStatus = FicStatus.Any, CrossoverStatus crossover = CrossoverStatus.Any)
         {
-            if (!DateTime.TryParse(updateBeforeString, out DateTime updateBefore))
-                updateBefore = DateTime.MinValue;
-
-            if (!DateTime.TryParse(publishBeforeString, out DateTime publishBefore))
-                publishBefore = DateTime.MinValue;
-
             ActiveSearch = new Search // Build search from passed form results
             {
                 Basic = basic,
@@ -93,8 +88,8 @@ namespace FanfictionMultisearch.Search
                 Views = views,
                 Comments = comments,
                 WordCount = wordCount,
-                UpdateBefore = updateBefore, // TODO 
-                PublishBefore = publishBefore, // Rework this and the one above to be DateTimes
+                UpdateBefore = updateBefore,
+                PublishBefore = publishBefore,
                 Direction = direction,
                 SearchFicsBy = searchBy,
                 FicRaiting = raiting,

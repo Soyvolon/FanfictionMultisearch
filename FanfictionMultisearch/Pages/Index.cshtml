@@ -16,9 +16,40 @@
                     <td><input class="w-100 float-md-right" asp-for="BasicSearch" value="@Model.BasicSearch" /></td>
                 </tr>
             </table>
-            <table>
+            <table class="search-item">
                 <tr>
-                    
+                    <th class="border-right mid-margin-left">
+                        Search Direction:
+                    </th>
+                    <th class="border-right mid-margin-right mid-margin-left">
+                        Order By:
+                    </th>
+                    <th class="border-right mid-margin-right mid-margin-left">
+                        Rating:
+                    </th>
+                    <th class="border-right mid-margin-right mid-margin-left">
+                        Status:
+                    </th>
+                    <th class="mid-margin-right">
+                        Crossovers:
+                    </th>
+                </tr>
+                <tr>
+                    <td class="border-right mid-margin-left">
+                        <select class="w-100 float-md-right" asp-for="SearchDir" asp-items="Html.GetEnumSelectList<FanfictionMultisearch.Search.SearchDirection>()"></select>
+                    </td>
+                    <td class="border-right mid-margin-right mid-margin-left">
+                        <select class="w-100 float-md-right" asp-for="SearchFicsBy" asp-items="Html.GetEnumSelectList<FanfictionMultisearch.Search.SearchBy>()"></select>
+                    </td>
+                    <td class="border-right mid-margin-right mid-margin-left">
+                        <select class="w-100 float-md-right" asp-for="FicRating" asp-items="Html.GetEnumSelectList<FanfictionMultisearch.Search.Raiting>()"></select>
+                    </td>
+                    <td class="border-right mid-margin-right mid-margin-left">
+                        <select class="w-100 float-md-right" asp-for="Status" asp-items="Html.GetEnumSelectList<FanfictionMultisearch.Search.FicStatus>()"></select>
+                    </td>
+                    <td class="mid-margin-right">
+                        <select class="w-100 float-md-right" asp-for="Crossover" asp-items="Html.GetEnumSelectList<FanfictionMultisearch.Search.CrossoverStatus>()"></select>
+                    </td>
                 </tr>
             </table>
             <hr />
@@ -117,7 +148,7 @@
                         </td>
                     </tr>
                 </table>
-                <table>
+                <table class="search-item">
                     <tr>
                         <th class="border-right mid-margin-left">
                             Updated Before:
@@ -128,10 +159,10 @@
                     </tr>
                     <tr>
                         <td class="border-right mid-margin-left">
-
+                            <input class="w-100 float-md-right" asp-for="UpdateBeforeStr" value="@Model.UpdateBeforeStr" />
                         </td>
                         <td class="mid-margin-right">
-
+                            <input class="w-100 float-md-right" asp-for="PublishBeforeStr" value="@Model.PublishBeforeStr" />
                         </td>
                     </tr>
                 </table>

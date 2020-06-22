@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using FanfictionMultisearch.Search;
 using System.Globalization;
+using System.Reflection.Metadata.Ecma335;
+using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
+using X.PagedList;
 
 namespace FanfictionMultisearch.Pages
 {
@@ -31,10 +35,6 @@ namespace FanfictionMultisearch.Pages
         public string FandomsStr { get; set; }
         [BindProperty]
         public string OtherTagsStr { get; set; }
-        [BindProperty]
-        public string UpdateBeforeStr { get; set; }
-        [BindProperty]
-        public string PublishBeforeStr { get; set; }
         #endregion
 
         #region Numerical Serach Properties
@@ -56,6 +56,26 @@ namespace FanfictionMultisearch.Pages
         public int WordCountMax { get; set; }
         #endregion
 
+        #region DateTime Variables
+        [BindProperty]
+        public string UpdateBeforeStr { get; set; }
+        [BindProperty]
+        public string PublishBeforeStr { get; set; }
+        #endregion
+
+        #region Enum Variables
+        [BindProperty]
+        public SearchDirection SearchDir { get; set; }
+        [BindProperty]
+        public SearchBy SearchFicsBy { get; set; }
+        [BindProperty]
+        public Raiting FicRating { get; set; }
+        [BindProperty]
+        public FicStatus Status { get; set; }
+        [BindProperty]
+        public CrossoverStatus Crossover { get; set; }
+        #endregion
+
         public IndexModel(ILogger<IndexModel> logger)
         {
             _logger = logger;
@@ -71,6 +91,130 @@ namespace FanfictionMultisearch.Pages
             SearchManager.NewSearch(BasicSearch, TitleStr, AuthorStr, CharacterStr, RelationshipStr, FandomsStr, OtherTagsStr,
                 new Tuple<int, int>(WordCountMin, WordCountMax), new Tuple<int, int>(ViewsMin, ViewsMax),
                 new Tuple<int, int>(CommentsMin, CommentsMax), new Tuple<int, int>(WordCountMin, WordCountMax));
+        }
+
+        private DateTime ParseToDateTime(string input)
+        {
+            DateTime finalResult = new DateTime();
+            int start = 0;
+            int end = 0;
+            // Follows rules for AO3 Date Search
+            // Split the item by blank spaces.
+            var items = input.Trim().Split(" ", StringSplitOptions.RemoveEmptyEntries);
+            // Create a counter to keep track of position
+            int c = 0;
+
+            // Time to find the actuall timeframe, whats the start and end numbers.
+            if (items.Length > 0)
+            {
+                // See if the first item is a number.
+                if (int.TryParse(items[c], out int res1))
+                {
+                    // If it is, assign it to the start positon.
+                    start = res1;
+                }
+                else
+                {
+                    // See if the first item is a symbol.
+                    if (items[c].StartsWith("<") || items[c].StartsWith(">"))
+                    { // If it is, split the grouping into symbol and number.
+                        var startStr = items[c][0..1];
+                        var dataStr = items[c][1..];
+                        // And find out if the number is actually a number.
+                        if (int.TryParse(dataStr, out int res2))
+                        { // If it is, test for the direction of the symbol
+                            if (startStr.Equals("<"))
+                            { // If its less than, start becomes the result and end is 0.
+                                start = res2;
+                                end = 0;
+                            }
+                            else
+                            { // If its greater than, end becomes the result and start is 0.
+                                start = 0;
+                                end = res2;
+                            }
+                        }
+                        else
+                        { // If it is not a number, fail the check and reutrn the default value.
+                            return default;
+                        }
+                    } // Otherwise, see if it is a range and contains the range operator
+                    else if (items[c].Contains("-"))
+                    { // if it is, split the item by the range operator
+                        var split = items[c].Split("-", StringSplitOptions.RemoveEmptyEntries);
+                        var startStr = split[0];
+                        var endStr = split[1];
+                        // Check both the start number and end number to ensure they are numbers.
+                        if (int.TryParse(startStr, out int resStart))
+                        {
+                            if (int.TryParse(endStr, out int resEnd))
+                            { // Assign the start to start, and end to end.
+                                start = resStart;
+                                end = resEnd;
+                            }
+                        } // If either fails, ignore it, they both wind up being zero and default will be returned later.
+                    }
+                    else
+                    { // lastly, check to see if there were spaces between the range operator.
+                        if(input.Contains("-"))
+                        { // if there was, split by the range operator and find the two numerical values.
+                            string startStr;
+                            string endStr;
+                            try
+                            {
+                                if (items[1].Contains("-"))
+                                { // We know where the dash is, so find the start and end values.
+                                    startStr = items[0];
+                                    // If the dash item is also the second number, because it starts with a dash but does not equal it,
+                                    if (items[1].StartsWith("-") && !items[1].Equals("-"))
+                                    { // Then substring the dash from the item.
+                                        endStr = items[1][1..];
+                                        c = 1; // Adjust c for accuracy
+                                    }
+                                    else
+                                    { // Otherwise, use the next item.
+                                        endStr = items[2];
+                                        c = 2; // Adjust c for accuracy
+                                    }
+                                }
+                                else
+                                { // The dash is in the wrong spot, so ignore this section. Return default.
+                                    return default;
+                                }
+                            }
+                            catch (IndexOutOfRangeException)
+                            { // Looks like there was some missing data, return default
+                                return default;
+                            }
+
+                            // Check both the start number and end number to ensure they are numbers.
+                            if (int.TryParse(startStr, out int resStart))
+                            {
+                                if (int.TryParse(endStr, out int resEnd))
+                                { // Assign the start to start, and end to end.
+                                    start = resStart;
+                                    end = resEnd;
+                                }
+                            } // If either fails, ignore it, they both wind up being zero and default will be returned later.
+                        }
+                        // if there was not, return default.
+                        return default;
+                    }
+                }
+            }
+
+            // If nothing was changed from start, a value was not found. Return the default value.
+            if (start == 0 && end == 0) return default;
+
+            c++; // Moving to the next part
+
+            // Time to find the span, is it months, days, weeks, etc?
+            if(items.Length > 1)
+            {
+                
+            }
+
+            return default;
         }
 
         /*
