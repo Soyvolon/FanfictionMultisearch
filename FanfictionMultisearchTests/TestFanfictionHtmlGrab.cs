@@ -18,7 +18,9 @@ namespace FanfictionMultisearchTests
                 Query = "abcd"
             };
 
-            r.Result.LoadHtml(SearchManager.GetHtml(r.GetRequestString()));
+            r.Result.LoadHtml(SearchManager.GetHtml(r.GetRequestString(new bool[18] {true, true, true, true, true,
+                    true, true, true, true, true, true, true, true, true,
+                    true, true, true, true})));
 
             r.FixBasicErrors();
 
@@ -33,7 +35,9 @@ namespace FanfictionMultisearchTests
                 Query = "abcd"
             };
 
-            r.Result.LoadHtml(SearchManager.GetHtml(r.GetRequestString()));
+            r.Result.LoadHtml(SearchManager.GetHtml(r.GetRequestString(new bool[18] {true, true, true, true, true,
+                    true, true, true, true, true, true, true, true, true,
+                    true, true, true, true})));
 
             r.FixBasicErrors();
 
@@ -48,7 +52,9 @@ namespace FanfictionMultisearchTests
                 Query = "abcd"
             };
 
-            r.Result.LoadHtml(SearchManager.GetHtml(r.GetRequestString()));
+            r.Result.LoadHtml(SearchManager.GetHtml(r.GetRequestString(new bool[18] {true, true, true, true, true,
+                    true, true, true, true, true, true, true, true, true,
+                    true, true, true, true})));
 
             r.FixBasicErrors();
 
