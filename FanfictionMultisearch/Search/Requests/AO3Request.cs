@@ -92,31 +92,43 @@ namespace FanfictionMultisearch.Search.Requests
 
             if(usedParts[2])
             {
-                request += $"&{request_part_authors}{Authors[0]}";
+                if (Authors.Count > 0)
+                {
+                    request += $"&{request_part_authors}{Authors[0]}";
 
-                for (int i = 1; i < Authors.Count; i++)
-                    request += $"%2C{Authors[i]}";
+                    for (int i = 1; i < Authors.Count; i++)
+                        request += $"%2C{Authors[i]}";
+                }
             }
             if (usedParts[3])
             {
-                request += $"&{request_part_characters}{Characters[0]}";
+                if (Characters.Count > 0)
+                {
+                    request += $"&{request_part_characters}{Characters[0]}";
 
-                for (int i = 1; i < Characters.Count; i++)
-                    request += $"%2C{Characters[i]}";
+                    for (int i = 1; i < Characters.Count; i++)
+                        request += $"%2C{Characters[i]}";
+                }
             }
             if (usedParts[4])
             {
-                request += $"&{request_part_fandoms}{Fandoms[0]}";
+                if (Fandoms.Count > 0)
+                {
+                    request += $"&{request_part_fandoms}{Fandoms[0]}";
 
-                for (int i = 1; i < Fandoms.Count; i++)
-                    request += $"%2C{Fandoms[i]}";
+                    for (int i = 1; i < Fandoms.Count; i++)
+                        request += $"%2C{Fandoms[i]}";
+                }
             }
             if (usedParts[5])
             {
-                request += $"&{request_part_other_tags}{OtherTags[0]}";
+                if (OtherTags.Count > 0)
+                {
+                    request += $"&{request_part_other_tags}{OtherTags[0]}";
 
-                for (int i = 1; i < OtherTags.Count; i++)
-                    request += $"%2C{OtherTags[i]}";
+                    for (int i = 1; i < OtherTags.Count; i++)
+                        request += $"%2C{OtherTags[i]}";
+                }
             }
 
             if (usedParts[6])
