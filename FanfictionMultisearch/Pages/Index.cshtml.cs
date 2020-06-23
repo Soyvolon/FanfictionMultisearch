@@ -84,10 +84,16 @@ namespace FanfictionMultisearch.Pages
         public IndexModel(ILogger<IndexModel> logger)
         {
             _logger = logger;
+            Notice = new HomepageNotice
+            {
+                Color = "lightgoldenrodyellow",
+                Content = "Currently the only working parts for Fan Fiction Finder is the Baisc Serach, Search Direction and Order By options.Thanks for stopping by!"
+            };
         }
 
         public void OnGet()
         {
+            /*
             if (!Directory.Exists($"{Program.BasePath}NoticeData"))
                 Directory.CreateDirectory($"{Program.BasePath}NoticeData");
 
@@ -107,6 +113,7 @@ namespace FanfictionMultisearch.Pages
                 json = sr.ReadToEnd();
 
             Notice = JsonConvert.DeserializeObject<HomepageNotice>(json);
+            */
         }
 
         public void OnPost()
