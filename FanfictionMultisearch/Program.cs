@@ -11,6 +11,18 @@ namespace FanfictionMultisearch
 {
     public class Program
     {
+        public static string BasePath
+        {
+            get
+            {
+#if DEBUG
+                return "";
+#else
+return "/root/";
+#endif
+            }
+        }
+
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();

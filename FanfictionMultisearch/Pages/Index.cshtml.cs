@@ -88,12 +88,12 @@ namespace FanfictionMultisearch.Pages
 
         public void OnGet()
         {
-            if (!Directory.Exists("NoticeData"))
-                Directory.CreateDirectory("NoticeData");
+            if (!Directory.Exists($"{Program.BasePath}NoticeData"))
+                Directory.CreateDirectory($"{Program.BasePath}NoticeData");
 
-            if(!System.IO.File.Exists("NoticeData/homepage_notice.json"))
+            if(!System.IO.File.Exists($"{Program.BasePath}NoticeData/homepage_notice.json"))
             {
-                System.IO.File.WriteAllText("NoticeData/homepage_notice.json",
+                System.IO.File.WriteAllText($"{Program.BasePath}NoticeData/homepage_notice.json",
                     JsonConvert.SerializeObject(new HomepageNotice
                     {
                         Content = ""
