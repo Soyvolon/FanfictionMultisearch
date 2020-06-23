@@ -25,7 +25,7 @@ namespace FanfictionMultisearch.Search.Requests
         {
             Type = "story";
         }
-        public override string GetRequestString()
+        public override string GetRequestString(bool[] usedParts)
         {
             return request_body + keywords_body + Query + type_body + Type;
             //return "http://fanfiction.net";

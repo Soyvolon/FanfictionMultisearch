@@ -11,12 +11,13 @@ namespace FanfictionMultisearch.Search
 {
     public enum SearchDirection
     {
-        Descending,
+        Descending = 0,
         Ascending
     }
 
     public enum SearchBy
     {
+        BestMatch = 0,
         Likes,
         Views,
         UpdatedDate,
@@ -26,7 +27,7 @@ namespace FanfictionMultisearch.Search
 
     public enum Raiting
     {
-        Any,
+        Any = 0,
         General,
         Teen,
         Mature,
@@ -36,14 +37,14 @@ namespace FanfictionMultisearch.Search
 
     public enum FicStatus
     {
-        Any, // implys no preference
+        Any = 0, // implys no preference
         InProgress,
         Complete
     }
 
     public enum CrossoverStatus
     {
-        Any,
+        Any = 0,
         NoCrossover,
         Crossover
     }
@@ -71,7 +72,7 @@ namespace FanfictionMultisearch.Search
         public void NewSearch(string basic = "", string title = "", string authors = "", string characters = "", string relationships = "",
             string fandoms = "", string otherTags = "",
             Tuple<int, int> likes = null, Tuple<int, int> views = null, Tuple<int, int> comments = null, Tuple<int, int> wordCount = null,
-            DateTime updateBefore = default, DateTime publishBefore = default,
+            Tuple<DateTime, DateTime> updateBefore = default, Tuple<DateTime, DateTime> publishBefore = default,
             SearchDirection direction = SearchDirection.Descending, SearchBy searchBy = SearchBy.Likes, Raiting raiting = Raiting.Any,
             FicStatus ficStatus = FicStatus.Any, CrossoverStatus crossover = CrossoverStatus.Any)
         {
@@ -103,9 +104,10 @@ namespace FanfictionMultisearch.Search
 
         private void MakeWebRequest()
         {
+            var used = ActiveSearch.BuildUsedRequestArray();
             foreach (RequestBase request in ActiveSearch.Requests)
             {
-                string rstring = request.GetRequestString();
+                string rstring = request.GetRequestString(used);
                 if (rstring != null && rstring != "")
                 {
                     var html = GetHtml(rstring);
@@ -117,6 +119,7 @@ namespace FanfictionMultisearch.Search
                 }
             }
         }
+
         public static string GetHtml(string url)
         {
             string html = string.Empty;

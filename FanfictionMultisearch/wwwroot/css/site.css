@@ -118,3 +118,13 @@ body {
 {
     margin-right: .5em;
 }
+
+/* Notices CSS
+--------------------------------------------------*/
+.index-notice
+{
+    width:100% !important;
+    text-align:center !important;
+    border: 3px solid black !important;
+    padding: 1em !important;
+}

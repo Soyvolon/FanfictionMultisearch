@@ -20,18 +20,69 @@ namespace FanfictionMultisearch.Search
         public Tuple<int, int> Views {get; set;}
         public Tuple<int, int> Comments {get; set;}
         public Tuple<int, int> WordCount {get; set;}
-        public DateTime UpdateBefore {get; set;}
-        public DateTime PublishBefore {get; set;}
+        public Tuple<DateTime, DateTime> UpdateBefore {get; set;}
+        public Tuple<DateTime, DateTime> PublishBefore {get; set;}
         public SearchDirection Direction {get; set;}
         public SearchBy SearchFicsBy {get; set;}
         public Raiting FicRaiting {get; set;}
         public FicStatus Status {get; set;}
         public CrossoverStatus Crossover {get; set;}
+
         public List<RequestBase> Requests { get; private set; }
 
         public Search()
         {
             Requests = new List<RequestBase>();
+        }
+
+        public bool[] BuildUsedRequestArray()
+        {
+            // Set anything false that is not used. This will be used when guilding the query string.
+            bool[] used = new bool[18] {true, true, true, true, true,
+                    true, true, true, true, true, true, true, true, true,
+                    true, true, true, true};
+
+            if (Basic is null || Basic.Equals(""))
+                used[0] = false;
+            if (Title is null || Title.Equals(""))
+                used[1] = false;
+            if (Authors is null || Authors.Equals(""))
+                used[2] = false;
+            if (Characters is null || Characters.Equals(""))
+                used[3] = false;
+            if (Relationships is null || Relationships.Equals(""))
+                used[4] = false;
+            if (Fandoms is null || Fandoms.Equals(""))
+                used[5] = false;
+            if (OtherTags is null || OtherTags.Equals(""))
+                used[6] = false;
+
+            if (Likes.Item1 == 0 && Likes.Item2 == 0)
+                used[7] = false;
+            if (Views.Item1 == 0 && Views.Item2 == 0)
+                used[8] = false;
+            if (Comments.Item1 == 0 && Comments.Item2 == 0)
+                used[9] = false;
+            if (WordCount.Item1 == 0 && WordCount.Item2 == 0)
+                used[10] = false;
+
+            if (UpdateBefore.Item1 == default || UpdateBefore.Item2 == default)
+                used[11] = false;
+            if (PublishBefore.Item1 == default || PublishBefore.Item2 == default)
+                used[12] = false;
+
+            if (Direction == 0)
+                used[13] = false;
+            if (SearchFicsBy == 0)
+                used[14] = false;
+            if (FicRaiting == 0)
+                used[15] = false;
+            if (Status == 0)
+                used[16] = false;
+            if (Crossover == 0)
+                used[17] = false;
+
+            return used;
         }
 
         /// <summary>

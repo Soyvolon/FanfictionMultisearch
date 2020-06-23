@@ -1,12 +1,18 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Home";
 }
-
+@if (!(Model.Notice.Content is null) && !Model.Notice.Content.Equals(""))
+{
+<div style="background-color:@Model.Notice.Color" class="show index-notice" id="notice">
+    <!-- Used for site annoucements that show up on the main serach page -->
+    <h4 class="">@Model.Notice.Content</h4>
+    <button data-toggle="collapse" data-target="#notice" type="button">Hide</button>
+</div>
+}
 <div class="text-center">
     <div class="align-top">
-        <button data-toggle="collapse" data-target="#advanced-serach">Advanced Search Options</button>
         <form method="post" class="form-group">
             <table class="search-item">
                 <tr>
@@ -53,6 +59,7 @@
                 </tr>
             </table>
             <hr />
+            <button data-toggle="collapse" data-target="#advanced-serach" type="button">Advanced Search Options</button>
             <div id="advanced-serach" class="collapse">
                 <table class="search-item">
                     <tr>

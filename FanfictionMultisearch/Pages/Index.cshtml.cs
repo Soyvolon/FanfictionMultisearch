@@ -11,6 +11,9 @@ using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using X.PagedList;
+using System.IO;
+using FanfictionMultisearch.NoticeData;
+using Newtonsoft.Json;
 
 namespace FanfictionMultisearch.Pages
 {
@@ -76,6 +79,8 @@ namespace FanfictionMultisearch.Pages
         public CrossoverStatus Crossover { get; set; }
         #endregion
 
+        public HomepageNotice Notice { get; private set; }
+
         public IndexModel(ILogger<IndexModel> logger)
         {
             _logger = logger;
@@ -83,19 +88,45 @@ namespace FanfictionMultisearch.Pages
 
         public void OnGet()
         {
-            
+            if (!Directory.Exists("NoticeData"))
+                Directory.CreateDirectory("NoticeData");
+
+            if(!System.IO.File.Exists("NoticeData/homepage_notice.json"))
+            {
+                System.IO.File.WriteAllText("NoticeData/homepage_notice.json",
+                    JsonConvert.SerializeObject(new HomepageNotice
+                    {
+                        Content = ""
+                    }));
+            }
+
+            var json = "";
+
+            using (FileStream fs = new FileStream("NoticeData/homepage_notice.json", FileMode.OpenOrCreate))
+            using (StreamReader sr = new StreamReader(fs))
+                json = sr.ReadToEnd();
+
+            Notice = JsonConvert.DeserializeObject<HomepageNotice>(json);
         }
 
         public void OnPost()
         {
+            var updateTime = ParseToDateTime(UpdateBeforeStr);
+            var publishTime = ParseToDateTime(PublishBeforeStr);
+
             SearchManager.NewSearch(BasicSearch, TitleStr, AuthorStr, CharacterStr, RelationshipStr, FandomsStr, OtherTagsStr,
                 new Tuple<int, int>(WordCountMin, WordCountMax), new Tuple<int, int>(ViewsMin, ViewsMax),
-                new Tuple<int, int>(CommentsMin, CommentsMax), new Tuple<int, int>(WordCountMin, WordCountMax));
+                new Tuple<int, int>(CommentsMin, CommentsMax), new Tuple<int, int>(WordCountMin, WordCountMax),
+                updateTime, publishTime, SearchDir, SearchFicsBy, FicRating, Status, Crossover);
         }
 
-        private DateTime ParseToDateTime(string input)
+        private Tuple<DateTime, DateTime> ParseToDateTime(string input)
         {
-            DateTime finalResult = new DateTime();
+            if (input is null || input == "") // No input, return defaults
+                return new Tuple<DateTime, DateTime>(default, default);
+
+            DateTime dateStart = default;
+            DateTime dateEnd = default;
             int start = 0;
             int end = 0;
             // Follows rules for AO3 Date Search
@@ -149,8 +180,8 @@ namespace FanfictionMultisearch.Pages
                         {
                             if (int.TryParse(endStr, out int resEnd))
                             { // Assign the start to start, and end to end.
-                                start = resStart;
-                                end = resEnd;
+                                start = resEnd;
+                                end = resStart;
                             }
                         } // If either fails, ignore it, they both wind up being zero and default will be returned later.
                     }
@@ -192,8 +223,8 @@ namespace FanfictionMultisearch.Pages
                             {
                                 if (int.TryParse(endStr, out int resEnd))
                                 { // Assign the start to start, and end to end.
-                                    start = resStart;
-                                    end = resEnd;
+                                    start = resEnd;
+                                    end = resStart;
                                 }
                             } // If either fails, ignore it, they both wind up being zero and default will be returned later.
                         }
@@ -208,13 +239,60 @@ namespace FanfictionMultisearch.Pages
 
             c++; // Moving to the next part
 
+            TimeSpan startSpan;
+            TimeSpan endSpan;
+
             // Time to find the span, is it months, days, weeks, etc?
-            if(items.Length > 1)
+            if(items.Length > c)
             {
-                
+                var edited = items[c].Trim().ToLower();
+
+                if (edited.Contains("week"))
+                {
+                    startSpan = TimeSpan.FromDays(start * 7);
+                    endSpan = TimeSpan.FromDays(end * 7);
+                }
+                else if (edited.Contains("month"))
+                {
+                    startSpan = TimeSpan.FromDays(start * 30);
+                    endSpan = TimeSpan.FromDays(end * 30);
+                }
+                else if (edited.Contains("year"))
+                {
+                    startSpan = TimeSpan.FromDays(start * 365);
+                    endSpan = TimeSpan.FromDays(end * 365);
+                }
+                else
+                { // Nothing matches, assume days
+                    startSpan = TimeSpan.FromDays(start);
+                    endSpan = TimeSpan.FromDays(end);
+                }
+            }
+            else
+            { // there is no time modifier, so assume days.
+                startSpan = TimeSpan.FromDays(start);
+                endSpan = TimeSpan.FromDays(end);
             }
 
-            return default;
+            if (startSpan == TimeSpan.Zero)
+            {
+                dateStart = default;
+            }
+            else
+            {
+                dateStart = DateTime.Now - startSpan;
+            }
+
+            if (endSpan == TimeSpan.Zero)
+            {
+                dateEnd = default;
+            }
+            else
+            {
+                dateEnd = DateTime.Now - endSpan;
+            }
+
+            return new Tuple<DateTime, DateTime>(dateStart, dateEnd);
         }
 
         /*
