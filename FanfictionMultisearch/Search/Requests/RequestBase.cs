@@ -15,6 +15,7 @@ namespace FanfictionMultisearch.Search.Requests
 
         public List<string> Authors { get; set; }
         public List<string> Characters { get; set; }
+        public List<string> Relationships { get; set; }
         public List<string> Fandoms { get; set; }
         public List<string> OtherTags { get; set; }
 
@@ -46,7 +47,7 @@ namespace FanfictionMultisearch.Search.Requests
             Query = search.Basic;
         }
 
-        public virtual string GetRequestString(bool[] usedParts)
+        public virtual string GetRequestString(bool[] usedParts, int pageNumber = 1)
         {
             return null;
         }

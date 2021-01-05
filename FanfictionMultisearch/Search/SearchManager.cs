@@ -80,11 +80,11 @@ namespace FanfictionMultisearch.Search
             {
                 Basic = basic,
                 Title = title,
-                Authors = authors,
-                Characters = characters,
-                Relationships = relationships,
-                Fandoms = fandoms,
-                OtherTags = otherTags,
+                Authors = authors?.Split(",", StringSplitOptions.RemoveEmptyEntries).ToList(),
+                Characters = characters?.Split(",", StringSplitOptions.RemoveEmptyEntries).ToList(),
+                Relationships = relationships?.Split(",", StringSplitOptions.RemoveEmptyEntries).ToList(),
+                Fandoms = fandoms?.Split(",", StringSplitOptions.RemoveEmptyEntries).ToList(),
+                OtherTags = otherTags?.Split(",", StringSplitOptions.RemoveEmptyEntries).ToList(),
                 Likes = likes,
                 Views = views,
                 Comments = comments,
@@ -102,12 +102,12 @@ namespace FanfictionMultisearch.Search
             MakeWebRequest(); // Make a new web request
         }
 
-        private void MakeWebRequest()
+        private void MakeWebRequest(int pageNumber = 1)
         {
             var used = ActiveSearch.BuildUsedRequestArray();
             foreach (RequestBase request in ActiveSearch.Requests)
             {
-                string rstring = request.GetRequestString(used);
+                string rstring = request.GetRequestString(used, pageNumber);
                 if (rstring != null && rstring != "")
                 {
                     var html = GetHtml(rstring);

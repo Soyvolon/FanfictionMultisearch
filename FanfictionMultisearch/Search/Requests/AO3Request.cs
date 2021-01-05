@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
+
+using Microsoft.VisualBasic;
 
 namespace FanfictionMultisearch.Search.Requests
 {
@@ -20,6 +23,7 @@ namespace FanfictionMultisearch.Search.Requests
 
         private readonly string request_part_authors = "work_search%5Bcreators%5D=";
         private readonly string request_part_characters = "work_search%5Bcharacter_names%5D=";
+        private readonly string request_part_relationships = "work_search%5Brelationship_names%5D=";
         private readonly string request_part_fandoms = "work_search%5Bfandom_names%5D=";
         private readonly string request_part_other_tags = "work_search%5Bfreeform_names%5D=";
 
@@ -47,7 +51,19 @@ namespace FanfictionMultisearch.Search.Requests
         public AO3Request(Search search) : base(search)
         {
             // Archive specefic features
+            Authors = search.Authors;
+            Characters = search.Characters;
+            Relationships = search.Relationships;
+            Fandoms = search.Fandoms;
+            OtherTags = search.OtherTags;
 
+            Likes = GetDualNumberString(search.Likes);
+            Views = GetDualNumberString(search.Views);
+            Comments = GetDualNumberString(search.Comments);
+            WordCount = GetDualNumberString(search.WordCount);
+
+            UpdateBefore = GetDualTimeString(search.UpdateBefore);
+            PublishBefore = ""; // No search feature for AO3
 
             switch (search.SearchFicsBy)
             {
@@ -82,7 +98,49 @@ namespace FanfictionMultisearch.Search.Requests
             }
         }
 
-        public override string GetRequestString(bool[] usedParts)
+        private string GetDualNumberString(Tuple<int, int> value)
+        {
+            var first = value.Item1;
+            var last = value.Item2;
+
+            if (first == last)
+                return first.ToString();
+            else if (first == 0)
+                return $"<{last}";
+            else if (last == 0)
+                return $">{first}";
+            else if (first < last)
+                return $"{first}-{last}";
+            else
+                return "";
+        }
+
+        private string GetDualTimeString(Tuple<DateTime, DateTime> value)
+        {
+            try
+            {
+                var now = DateTime.Now;
+                var first = Convert.ToInt32((now - value.Item1).TotalDays);
+                var last = Convert.ToInt32((now - value.Item2).TotalDays);
+
+                if (first == last)
+                    return $"{first} days";
+                else if (first == 0)
+                    return $"<{last} days";
+                else if (last == 0)
+                    return $">{first} days";
+                else if (first < last)
+                    return $"{first}-{last} days";
+                else
+                    return "";
+            }
+            catch
+            {
+                return "";
+            }
+        }
+
+        public override string GetRequestString(bool[] usedParts, int pageNumber = 1)
         {
             // Alway use the basic request, even if it is blank.
             string request = $"{request_body}&{request_part_basic}{Query}";
@@ -90,7 +148,7 @@ namespace FanfictionMultisearch.Search.Requests
             if (usedParts[1])
                 request += $"&{request_part_title}{Title}";
 
-            if(usedParts[2])
+            if (usedParts[2])
             {
                 if (Authors.Count > 0)
                 {
@@ -112,6 +170,16 @@ namespace FanfictionMultisearch.Search.Requests
             }
             if (usedParts[4])
             {
+                if (Relationships.Count > 0)
+                {
+                    request += $"&{request_part_relationships}{Relationships[0]}";
+
+                    for (int i = 1; i < Relationships.Count; i++)
+                        request += $"%2C{Relationships[i]}";
+                }
+            }
+            if (usedParts[5])
+            {
                 if (Fandoms.Count > 0)
                 {
                     request += $"&{request_part_fandoms}{Fandoms[0]}";
@@ -120,7 +188,7 @@ namespace FanfictionMultisearch.Search.Requests
                         request += $"%2C{Fandoms[i]}";
                 }
             }
-            if (usedParts[5])
+            if (usedParts[6])
             {
                 if (OtherTags.Count > 0)
                 {
@@ -131,28 +199,30 @@ namespace FanfictionMultisearch.Search.Requests
                 }
             }
 
-            if (usedParts[6])
-                request += $"&{request_part_likes}{Likes}";
             if (usedParts[7])
-                request += $"&{request_part_views}{Views}";
+                request += $"&{request_part_likes}{Likes}";
             if (usedParts[8])
-                request += $"&{request_part_comments}{Comments}";
+                request += $"&{request_part_views}{Views}";
             if (usedParts[9])
+                request += $"&{request_part_comments}{Comments}";
+            if (usedParts[10])
                 request += $"&{request_part_word_count}{WordCount}";
 
-            if (usedParts[10])
+            if (usedParts[11])
                 request += $"&{request_part_update_before}{UpdateBefore}";
 
-            if (usedParts[12])
-                request += $"&{request_part_sort_dir}{SortDir}";
             if (usedParts[13])
-                request += $"&{request_part_sort_by}{SortBy}";
+                request += $"&{request_part_sort_dir}{SortDir}";
             if (usedParts[14])
-                request += $"&{request_part_raiting}{Raiting}";
+                request += $"&{request_part_sort_by}{SortBy}";
             if (usedParts[15])
-                request += $"&{request_part_status}{Status}";
+                request += $"&{request_part_raiting}{Raiting}";
             if (usedParts[16])
+                request += $"&{request_part_status}{Status}";
+            if (usedParts[17])
                 request += $"&{request_part_crossover}{Crossover}";
+
+            request += $"&{page_request_body}{pageNumber}";
 
             return request;
         }

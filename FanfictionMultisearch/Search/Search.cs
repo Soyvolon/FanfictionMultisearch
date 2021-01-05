@@ -11,17 +11,21 @@ namespace FanfictionMultisearch.Search
     {
         public string Basic {get; set;}
         public string Title {get; set;}
-        public string Authors {get; set;}
-        public string Characters {get; set;}
-        public string Relationships {get; set;}
-        public string Fandoms {get; set;}
-        public string OtherTags {get; set;}
+
+        public List<string> Authors {get; set;}
+        public List<string> Characters {get; set;}
+        public List<string> Relationships {get; set;}
+        public List<string> Fandoms {get; set;}
+        public List<string> OtherTags {get; set;}
+
         public Tuple<int, int> Likes {get; set;}
         public Tuple<int, int> Views {get; set;}
         public Tuple<int, int> Comments {get; set;}
         public Tuple<int, int> WordCount {get; set;}
+
         public Tuple<DateTime, DateTime> UpdateBefore {get; set;}
         public Tuple<DateTime, DateTime> PublishBefore {get; set;}
+
         public SearchDirection Direction {get; set;}
         public SearchBy SearchFicsBy {get; set;}
         public Raiting FicRaiting {get; set;}

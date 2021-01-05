@@ -1,19 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using FanfictionMultisearch.Search;
-using System.Globalization;
-using System.Reflection.Metadata.Ecma335;
-using System.Runtime.CompilerServices;
-using Microsoft.AspNetCore.Mvc.TagHelpers;
-using X.PagedList;
-using System.IO;
 using FanfictionMultisearch.NoticeData;
-using Newtonsoft.Json;
 
 namespace FanfictionMultisearch.Pages
 {

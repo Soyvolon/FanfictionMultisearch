@@ -33,7 +33,7 @@ namespace FanfictionMultisearch.Search.Requests
             return tags;
         }
 
-        public override string GetRequestString(bool[] usedParts)
+        public override string GetRequestString(bool[] usedParts, int pageNumber = 1)
         {
             return request_base + Query + CompileTagString();
         }
